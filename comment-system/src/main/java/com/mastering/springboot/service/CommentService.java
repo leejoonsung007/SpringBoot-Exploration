@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Logger;
 
-@Service
+@Service // mark as a spring service
 @Transactional(readOnly = true)
 public class CommentService {
 
@@ -28,7 +28,7 @@ public class CommentService {
         return commentRepository.saveAll(comments);
     }
 
-    public List<Comment> getALLCommentForToday(){
+    public List<Comment> getALLCommentsForToday(){
         LocalDate localDate = LocalDate.now();
         return commentRepository.findByCreatedYearAndMonthAndDay(localDate.getYear(),
                 localDate.getMonth().getValue(), localDate.getDayOfMonth());
