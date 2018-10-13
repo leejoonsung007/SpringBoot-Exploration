@@ -12,8 +12,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "rb_user")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class User {
 
     @Id
@@ -23,6 +21,15 @@ public class User {
     private String username;
     private String password;
     private String role;
+
+    public User(){}
+
+    public User(Long id, String username, String password, String role) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
 
     public void setId(Long id) {
         this.id = id;

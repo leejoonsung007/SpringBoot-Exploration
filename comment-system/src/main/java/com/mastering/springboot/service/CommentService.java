@@ -28,7 +28,7 @@ public class CommentService {
         return commentRepository.saveAll(comments);
     }
 
-    public List<Comment> getALLCommentsForToday(){
+    public List<Comment> getAllCommentsForToday(){
         LocalDate localDate = LocalDate.now();
         return commentRepository.findByCreatedYearAndMonthAndDay(localDate.getYear(),
                 localDate.getMonth().getValue(), localDate.getDayOfMonth());

@@ -45,7 +45,7 @@ public class CommentServiceTest {
         when(commentRepository.findByCreatedYearAndMonthAndDay(now.getYear(), now.getMonth().getValue(), now.getDayOfMonth())).thenReturn(comments);
 
         // When
-        List<Comment> actualComments = commentService.getALLCommentsForToday();
+        List<Comment> actualComments = commentService.getAllCommentsForToday();
 
         // Then
         verify(commentRepository, times(1)).findByCreatedYearAndMonthAndDay(now.getYear(), now.getMonth().getValue(), now.getDayOfMonth());
