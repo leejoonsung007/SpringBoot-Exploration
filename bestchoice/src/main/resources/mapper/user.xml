@@ -64,14 +64,8 @@
             <if test="location !=null and location != '' ">
                 location = #{location},
             </if>
-            <if test="role_id !=null and role_id != '' ">
-                role_id = #{role_id},
-            </if>
             <if test="password !=null and password != '' ">
                 password = #{password},
-            </if>
-            <if test="confirmed !=null ">
-                confirmed = #{confirmed},
             </if>
             <if test="photo !=null ">
                 photo = #{photo},

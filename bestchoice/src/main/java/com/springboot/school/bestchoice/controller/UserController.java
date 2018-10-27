@@ -5,14 +5,17 @@ import com.springboot.school.bestchoice.form.RegistrationForm;
 import com.springboot.school.bestchoice.model.User;
 import com.springboot.school.bestchoice.result.ResultMsg;
 import com.springboot.school.bestchoice.service.UserService;
+import com.springboot.school.bestchoice.utils.HashUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -67,7 +70,6 @@ public class UserController {
         }else{
             HttpSession session = request.getSession(true);
             session.setAttribute(CommonConstant.USER_ATTRIBUTE, user);
-            session.setAttribute(CommonConstant.PLAIN_USER_ATTRIBUTE, user);
             return StringUtils.isNoneBlank(target)? "redirect:" + target : "redirect:/index";
         }
     }
@@ -79,4 +81,63 @@ public class UserController {
         return "redirect:/index";
 
     }
+
+    //---------------------------profile page------------------------------
+    @GetMapping("accounts/profile")
+    public String profile(){
+        return "/user/accounts/profile";
+    }
+
+    @RequestMapping("accounts/edit_profile")
+    public String editProfile(HttpServletRequest request, User updateUser, ModelMap model){
+        if(updateUser.getEmail() == null){
+            return "/user/accounts/edit_profile";
+        }
+        userService.updateUser(updateUser, updateUser.getEmail());
+        //put update user to session
+        User query = new User();
+        query.setEmail(updateUser.getEmail());
+        List<User> users = userService.getUserByQuery(query);
+        request.getSession(true).setAttribute(CommonConstant.USER_ATTRIBUTE, users.get(0));
+        return "redirect:/accounts/profile?" + ResultMsg.successMsg("update successfully").asUrlParams();
+
+    }
+
+    @RequestMapping("accounts/changePassword")
+    public String changePassword(String email, String password, String newPassword, String confirmPassword, ModelMap modelMap){
+        User user = userService.check(email, password);
+        if(user == null || !confirmPassword.equals(newPassword)){
+            return "redirect:/accounts/profile?" + ResultMsg.errorMsg("password is not correct").asUrlParams();
+        }
+        User updateUser = new User();
+        updateUser.setPassword(HashUtils.encrypt(newPassword));
+        userService.updateUser(updateUser, updateUser.getEmail());
+        return "redirect:/accounts/profile?" + ResultMsg.successMsg("change password successfully").asUrlParams();
+    }
+
+    //forget password
+    @RequestMapping("accounts/remember")
+    public String remember(String username, ModelMap modelmap){
+        if(StringUtils.isBlank(username)){
+            return "redirect:/accounts:?" + ResultMsg.errorMsg("Email cannot be empty");
+        }
+        userService.resetNotify(username);
+        modelmap.put("email", username);
+        return "/user/accounts/remember";
+    }
+
+    @RequestMapping("accounts/reset")
+    public String reset(String key, ModelMap modelMap){
+        String email = userService.getResetEmail(key);
+        if(StringUtils.isBlank(email)){
+            return "redirect:/accounts/login?" + ResultMsg.errorMsg("The link has been expired").asUrlParams();
+        }
+        modelMap.put("email", email);
+        modelMap.put("success_key", key);
+        return "/user/accounts/reset";
+    }
+
+//    @RequestMapping("accounts/resetSubmit")
+//    public String resetSubmit(HttpServletRequest request, User user)
+
 }

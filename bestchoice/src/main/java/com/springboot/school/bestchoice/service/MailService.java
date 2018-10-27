@@ -40,6 +40,8 @@ public class MailService {
         }
     }).build();
 
+    private final Cache<String, String> resetCache = CacheBuilder.newBuilder().maximumSize(100).expireAfterAccess(15, TimeUnit.MINUTES).build();
+
     public void sendMail(String title, String context, String recipient){
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(sender);
@@ -69,4 +71,19 @@ public class MailService {
         registerCache.invalidate(key);
         return true;
     }
+
+    @Async
+    public void resetNotify(String email){
+        String randomkey = RandomStringUtils.randomAlphanumeric(10);
+        resetCache.put(randomkey, email);
+        String content = "http://" + domainName + "/accounts/reset?key=" + randomkey;
+        sendMail("Password Reset", content, email);
+    }
+
+    public String getResetEmail(String key){
+        return  resetCache.getIfPresent(key);
+    }
+
+
+
 }

@@ -85,15 +85,15 @@
 
                         <ul class="dropdown-menu">
                             <#--{% if current_user.login_type != 'website' %}-->
-                            <#--<li><a href="{{ url_for('operation.user', username=current_user.username) }}">Profile</a>-->
-                            <#--</li>-->
+                            <li><a href="/accounts/profile">Profile</a>
+                            </li>
                             <#--{#                                    <li><a href="{{ url_for('operation.following', username=current_user.username)}}">Watching List</a></li>#}-->
                             <#--<li><a href="{{ url_for('auth.logout') }}">Log out</a></li>-->
                             <#--{% else %}-->
                             <#--<li><a href="{{ url_for('operation.user', username=current_user.username) }}">Profile</a>-->
                             <#--</li>-->
                             <#--{#                                    <li><a href="{{ url_for('operation.following', username=current_user.username)}}">Watching List</a></li>#}-->
-                            <#--<li><a href="{{ url_for('operation.change_password') }}">Change password</a></li>-->
+                            <li><a href="/">Change password</a></li>
                                 <li><a href="/accounts/logout">Log out</a></li></ul>
                     </li>
                     <#else>

@@ -66,4 +66,24 @@ public class UserService {
         List<User> list = userMapper.selectUsersByQuery(user);
         return list;
     }
+
+    public void updateUser(User updateUser, String email){
+        updateUser.setEmail(email);
+        userMapper.update(updateUser);
+    }
+
+    public void resetNotify(String username){
+        mailService.resetNotify(username);
+    }
+
+    public String getResetEmail(String key){
+        String email = "";
+        try{
+            email = mailService.getResetEmail(key);
+        }catch (Exception ignore){
+
+        }
+        return email;
+    }
+
 }
