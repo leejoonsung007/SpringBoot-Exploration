@@ -1,0 +1,58 @@
+buildscript {
+	ext {
+		springBootVersion = '2.0.6.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.springboot.blog'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	// add starter security
+	implementation('org.springframework.boot:spring-boot-starter-security')
+
+	implementation('org.springframework.boot:spring-boot-starter-web')
+
+	// add Thymeleaf
+	implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
+
+	//add Thymeleaf Spring Security
+	implementation('org.thymeleaf.extras:thymeleaf-extras-springsecurity4:3.0.2.RELEASE')
+
+	// add Spring Data JPA
+	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+
+	// add MySQL connection driver
+	implementation('mysql:mysql-connector-java:6.0.5')
+
+	//markdown
+	implementation('es.nitaur.markdown:txtmark:0.16')
+
+	// add Apache Commons Lang
+	implementation('org.apache.commons:commons-lang3:3.5')
+
+	// add H2
+	runtime('com.h2database:h2:1.4.196')
+
+	runtimeOnly('org.springframework.boot:spring-boot-devtools')
+
+	testImplementation('org.springframework.boot:spring-boot-starter-test')
+	testImplementation('org.springframework.security:spring-security-test')
+}
